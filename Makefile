@@ -4,7 +4,7 @@ LIB = -lncursesw
 # snakegame: snakegame.cpp
 # 	g++ -std=c++11 -g -o $@ $< -lncursesw
 
-bin : main.o snake.o point.o setmap.o gameset.o $(LIB)
+bin : main.o snake.o point.o setmap.o gameset.o item.o $(LIB)
 	g++ $(VERSION) -g -o $@ $^
 
 gameset.o : gameset.cpp snake.h gameset.h $(LIB)
@@ -13,7 +13,7 @@ gameset.o : gameset.cpp snake.h gameset.h $(LIB)
 snake.o : snake.cpp setmap.h snake.h point.h $(LIB)
 	g++ $(VERSION) -g -c $<
 
-setmap.o : setmap.cpp setmap.h point.h gameset.h $(LIB)
+setmap.o : setmap.cpp setmap.h point.h gameset.h item.h $(LIB)
 	g++ $(VERSION) -g -c $<
 
 point.o : point.cpp point.h
