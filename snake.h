@@ -30,7 +30,7 @@ public:
   Point getPos() const { return head; }
   int getSize() const { return size; }
   void setDirection(Direction d) { direction = d; }
-  void incSize();
+  void increaseSize();
   void getArrow(int key);
   void move();
   void draw() const;

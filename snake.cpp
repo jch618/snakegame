@@ -52,6 +52,15 @@ void Snake::getArrow(int key)
   }
 }
 
+void Snake::increaseSize()
+{
+  int y = body[body.size() - 2].y - body[body.size() - 1].y;
+  int x = body[body.size() - 2].x - body[body.size() - 1].x;
+
+  body.push_back({ y, x });
+  size++;
+}
+
 void Snake::draw() const
 {
   g_setMap.setOnMap(SetMap::win1, head, GAMEOBJECT_SNAKE_HEAD);
