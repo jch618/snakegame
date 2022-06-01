@@ -6,6 +6,7 @@ using namespace std;
 SetMap g_setMap;
 int g_gameMap[MAP_HSIZE][MAP_WSIZE];
 WINDOW* SetMap::win1 = nullptr;
+WINDOW* SetMap::win2 = nullptr;
 // SetMap g_setMap = SetMap();
 // int g_gameMap = { 0 };
 // 과제 조건: map을 txt로 구현 ->
@@ -19,6 +20,7 @@ void SetMap::refreshScreen(WINDOW* win1)
 {
   refresh();
   wrefresh(win1);
+  wrefresh(win2);
   using namespace std::this_thread;
   using namespace std::chrono;
   sleep_for(milliseconds(100));

@@ -3,8 +3,8 @@
 #include <ncurses.h>
 #include "setmap.h"
 #include "snake.h"
-#define SCREEN_WSIZE 50
-#define SCREEN_HSIZE 50
+#define SCREEN_WSIZE 70
+#define SCREEN_HSIZE 40
 
 
 // game의 설정변수들 저장
@@ -18,6 +18,7 @@ extern SetMap g_setMap;
 
 class GameSet {
 public:
+  void intro();
   void playingGame();
   void gameStart();
   void endGame();
