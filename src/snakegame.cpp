@@ -8,7 +8,7 @@
 char map[21][21]; // 0~ 20 0~ 20
 int main()
 {
-  setlocale(LC_ALL, "");
+  setlocale(LC_ALL, ""); //
   initscr();
   cbreak();
   noecho(); // 입력이 화면에 나타나지 않음

@@ -1,4 +1,4 @@
-#include "item.h"
+#include "../include/item.h"
 
 Item::Item(GameObject type, int y, int x)
 : type(type)

@@ -1,5 +1,5 @@
 #include <memory.h>
-#include "setmap.h"
+#include "../include/setmap.h"
 // #include "gameset.h"
 
 using namespace std;

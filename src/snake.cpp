@@ -1,11 +1,11 @@
-#include "snake.h"
+#include "../include/snake.h"
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
 void Snake::move()
 {
-  Point prevPos = head;
+  Point prevPos = head; //
   // head 이동
   if (direction == DIRECTION_LEFT) {
     head.x--;
