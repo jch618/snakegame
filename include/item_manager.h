@@ -1,12 +1,15 @@
 #include "setmap.h"
 #include "item.h"
-#include <vector>
+#include <deque>
 #include <ctime>
 
+extern int g_gameMap[MAP_HSIZE][MAP_WSIZE];
 // CLOCKS_PER_SEC 사용해서 초 계산
 class ItemManager {
   clock_t time;
-  vector<Item> items;
+  std::deque<Item> apples;
+  std::deque<Item> poisions;
 public:
-  void addItem();
+  void addItem(GameObect itemType);
+  void drawItems() const;
 };

@@ -43,6 +43,7 @@ void SetMap::delay()
   using namespace std::chrono;
   sleep_for(milliseconds(50));
 }
+
 void SetMap::printAll(WINDOW* win1)
 {
   // clear();
@@ -55,5 +56,4 @@ void SetMap::printAll(WINDOW* win1)
   }
   refresh(); // getch는 refresh를 포함한다.
   wrefresh(win1);
-
 }
