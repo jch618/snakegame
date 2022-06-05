@@ -23,6 +23,59 @@ void ItemManager::addItem(GameObject itemType)
   }
 }
 
+/* NEW  */
+void ItemManager::setTime()
+{
+  prevTime = clock();
+}
+
+void ItemManager::generate()
+{
+  if (!timeCheck()) {
+    return;
+  }
+  if (!isApplesFull() && !isPoisionsFull()) {
+    if (rand() % 2 == 0) {
+      addItem(GAMEOBJECT_APPLE);
+    }
+    else {
+      addItem(GAMEOBJECT_POISION);
+    }
+  }
+  else if (isApplesFull()) {
+    addItem(GAMEOBJECT_POISION);
+  }
+  else if (isPoisionsFull()) {
+    addItem(GAMEOBJECT_APPLE);
+  }
+  drawItems();
+}
+
+bool ItemManager::timeCheck()
+{
+  if (clock() - prevTime >= TIME_INTERVAL) {
+    setTime();
+    return true;
+  }
+  return false;
+}
+
+void ItemManager::checkInvalidItem()
+{
+  for (const auto& apple : apples) {
+    if (apple.invalid) {
+      apples.pop_front();
+    }
+  }
+  for (const auto& poision : poisions) {
+    if (poision.invalid) {
+      poisions.pop_front();
+    }
+  }
+}
+
+/*  */
+
 void ItemManager::drawItems() const
 {
   for (const auto& apple : apples) {

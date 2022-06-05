@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #include "setmap.h"
 #include "snake.h"
+#include "item_manager.h"
 #define SCREEN_WSIZE 70
 #define SCREEN_HSIZE 40
 

@@ -4,6 +4,8 @@ using namespace std;
 
 void GameSet::gameStart()
 {
+  srand(time(nullptr));
+  
   setlocale(LC_ALL, "");
   initscr();
   resize_term(SCREEN_HSIZE, SCREEN_WSIZE);
@@ -72,7 +74,7 @@ void GameSet::playingGame()
     snake.getArrow(key);
     /* snake */
     snake.move();
-    
+
     // snake.draw(); // in move
     /* snake end */
     g_setMap.refreshScreen(SetMap::win1);
