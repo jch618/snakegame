@@ -21,7 +21,7 @@ class Snake {
   Direction direction;
   bool die = false;
 public:
-  Snake(int y=7, int x=7): size(3) {
+  Snake(int y=MAP_HSIZE/2, int x=MAP_WSIZE/2): size(3) {
     head.y = y;
     head.x = x;
     body.push_back({ head.y, head.x + 1 });

@@ -3,7 +3,7 @@
 Item::Item(GameObject type, int y, int x)
 : type(type)
 {
-  bornTime = time();
+  bornTime = clock();
   pos.y = y;
   pos.x = x;
   if (type != GAMEOBJECT_APPLE && type != GAMEOBJECT_POISION) {

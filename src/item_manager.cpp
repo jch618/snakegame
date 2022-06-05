@@ -1,7 +1,7 @@
-#include "../include/item_manager"
+#include "../include/item_manager.h"
 #include <cstdlib>
 
-Item* ItemManager::makeItem(GameObject itemType)
+Item ItemManager::makeItem(GameObject itemType)
 {
   int y = rand() % MAP_HSIZE;
   int x = rand() % MAP_WSIZE;
@@ -9,17 +9,17 @@ Item* ItemManager::makeItem(GameObject itemType)
     y = rand() % MAP_HSIZE;
     x = rand() % MAP_WSIZE;
   }
-  return new Item(itemType, y, x);
+  return Item(itemType, y, x);
 }
 
 void ItemManager::addItem(GameObject itemType)
 {
-  Item* item = makeItem(itemType);
+  Item item = makeItem(itemType);
   if (itemType == GAMEOBJECT_APPLE) {
-    apples.push_back(*item);
+    apples.push_back(item);
   }
   else if (itemType == GAMEOBJECT_POISION) {
-    poisions.push_back(*item);
+    poisions.push_back(item);
   }
 }
 

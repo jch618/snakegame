@@ -1,7 +1,8 @@
 CXX := g++
 CPPFLAGS := -g
 EXCUTABLE := bin
-INCLUDE := -I/include
+INCLUDES := -I/include
+INCLUDE := include
 SRC := src
 VERSION := -std=c++11
 LIB := -lncursesw
@@ -11,26 +12,32 @@ EXEC := -g -o
 # snakegame: snakegame.cpp
 # 	g++ -std=c++11 -g -o $@ $< -lncursesw
 
-$(EXCUTABLE) : main.o snake.o point.o setmap.o gameset.o item.o $(LIB)
-	$(CXX) $(VERSION) $(EXEC) $@ $^
+$(EXCUTABLE) : main.o snake.o point.o setmap.o gameset.o item.o item_manager.o
+	$(CXX) $(VERSION) $(EXEC) $@ $^ $(LIB)
 
-gameset.o : $(SRC)/gameset.cpp
-	$(CXX) $(VERSION) $(OBJ) $(INCLUDE) $< $(LIB)
+gameset.o : $(SRC)/gameset.cpp $(INCLUDE)/gameset.h $(INCLUDE)/setmap.h $(INCLUDE)/snake.h
+	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $< $(LIB)
 
-snake.o : $(SRC)/snake.cpp $(LIB)
-	$(CXX) $(VERSION) $(OBJ) $(INCLUDE) $<
+snake.o : $(SRC)/snake.cpp $(INCLUDE)/snake.h $(INCLUDE)/point.h $(INCLUDE)/setmap.h $(INCLUDE)/gameset.h
+	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $< $(LIB)
 
-setmap.o : $(SRC)/setmap.cpp  $(LIB)
-	$(CXX) $(VERSION) $(OBJ) $(INCLUDE) $<
+setmap.o : $(SRC)/setmap.cpp $(INCLUDE)/setmap.h $(INCLUDE)/point.h
+	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $< $(LIB)
 
-point.o : $(SRC)/point.cpp
-	$(CXX) $(VERSION) $(OBJ) $(INCLUDE) $<
+point.o : $(SRC)/point.cpp $(INCLUDE)/point.h
+	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $<
 
-main.o : $(SRC)/main.cpp
-	$(CXX) $(VERSION) $(OBJ) $(INCLUDE) $<
+item.o : $(SRC)/item.cpp
+	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $< $(LIB)
 
-% : $(SRC)/%.cpp
-	$(CXX) $(EXEC) $@ $< $(LIB)
+item_manager.o : $(SRC)/item_manager.cpp
+	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $< $(LIB)
 
-%.o : %.cpp
-	$(CXX) $(VERSION) -g -c $<
+main.o : $(SRC)/main.cpp $(INCLUDE)/gameset.h
+	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $<
+
+# % : $(SRC)/%.cpp
+# 	$(CXX) $(EXEC) $@ $< $(LIB)
+#
+# %.o : %.cpp
+# 	$(CXX) $(VERSION) -g -c $<

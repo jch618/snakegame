@@ -10,8 +10,8 @@ class ItemManager {
   std::deque<Item> apples;
   std::deque<Item> poisions;
 public:
-  void addItem(GameObect itemType);
-  void drawItems() const;
+  void addItem(GameObject itemType);
+  Item makeItem(GameObject itemType);
 
   /* new  */
   void drawItems() const;
