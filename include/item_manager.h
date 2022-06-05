@@ -12,4 +12,12 @@ class ItemManager {
 public:
   void addItem(GameObect itemType);
   void drawItems() const;
+
+  /* new  */
+  void drawItems() const;
+  bool timeCheck();
+  bool isApplesFull() const;
+  bool isPoisionsFull() const;
+  void checkInvalidItem();
+  void generate();
 };

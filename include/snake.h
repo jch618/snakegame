@@ -31,10 +31,12 @@ public:
   int getSize() const { return size; }
   void setDirection(Direction d) { direction = d; }
   void increaseSize();
+  void decreaseSize();
   void getArrow(int key);
   void move();
   void draw() const;
   bool isDie() { return die; }
   void printSnake() const;
+  void conflictCheck();
 };
 #endif

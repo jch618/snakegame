@@ -30,6 +30,9 @@ void Snake::move()
   for (auto& p : body) {
     swap(prevPos, p);
   }
+
+  draw();
+  conflictCheck();
 }
 
 void Snake::getArrow(int key)
@@ -52,6 +55,32 @@ void Snake::getArrow(int key)
   }
 }
 
+/* new */
+void Snake::conflictCheck()
+{
+  int& headPos = g_gameMap[head.y][head.x];
+  if (headPos == GAMEOBJECT_BLOCK) {
+    cout << "1";
+    die = true;
+  }
+  else if (headPos == GAMEOBJECT_SNAKE_BODY) {
+    cout << "2";
+    die = true;
+  }
+  else if (headPos == GAMEOBJECT_APPLE) {
+    cout << "3";
+    increaseSize();
+  }
+  else if (headPos == GAMEOBJECT_POISION) {
+    cout << "4";
+    decreaseSize();
+  }
+  else if (headPos == GAMEOBJECT_PORTAL) {
+    cout << "5";
+
+  }
+}
+
 void Snake::increaseSize()
 {
   int y = body[body.size() - 2].y - body[body.size() - 1].y;
@@ -59,6 +88,12 @@ void Snake::increaseSize()
 
   body.push_back({ y, x });
   size++;
+}
+
+void Snake::decreaseSize()
+{
+  body.pop_back();
+  size--;
 }
 
 void Snake::draw() const

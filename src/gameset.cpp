@@ -70,8 +70,11 @@ void GameSet::playingGame()
     wattron(SetMap::win2, COLOR_PAIR(2));
     wborder(SetMap::win2, '|', '|', '-', '-', '*', '*', '*', '*');
     snake.getArrow(key);
+    /* snake */
     snake.move();
-    snake.draw();
+    
+    // snake.draw(); // in move
+    /* snake end */
     g_setMap.refreshScreen(SetMap::win1);
     // g_setMap.printAll(SetMap::win1);
     // flushinp();
