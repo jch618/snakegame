@@ -15,6 +15,7 @@ void Item::checkCollision()
 {
   if (g_gameMap[pos.y][pos.x] == GAMEOBJECT_SNAKE_HEAD) {
     invalid = true;
+    draw();
   }
 }
 

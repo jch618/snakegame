@@ -91,11 +91,12 @@ void Snake::increaseSize()
 
 void Snake::decreaseSize()
 {
+  drawEmpty(body.back());
   body.pop_back();
   size--;
 }
 
-void Snake::draw(Point prevPos) const
+void Snake::draw(const Point& prevPos) const
 {
   g_setMap.setOnMap(SetMap::win1, head, GAMEOBJECT_SNAKE_HEAD);
   for (const auto& p : body) {
@@ -103,5 +104,6 @@ void Snake::draw(Point prevPos) const
   }
   // temporary
   wattron(SetMap::win1, COLOR_PAIR(1));
-  g_setMap.setOnMap(SetMap::win1, prevPos, GAMEOBJECT_EMPTY);
+  drawEmpty(prevPos);
+  // g_setMap.setOnMap(SetMap::win1, prevPos, GAMEOBJECT_EMPTY);
 }

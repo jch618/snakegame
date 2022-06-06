@@ -34,7 +34,10 @@ public:
   void decreaseSize();
   void getArrow(int key);
   void move();
-  void draw(Point prevPos) const;
+  void draw(const Point& prevPos) const;
+  void drawEmpty(const Point& pos) const {
+    g_setMap.setOnMap(SetMap::win1, pos, GAMEOBJECT_EMPTY);
+  }
   bool isDie() { return die; }
   void printSnake() const;
   void conflictCheck();
