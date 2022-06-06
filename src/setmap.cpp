@@ -7,10 +7,7 @@ SetMap g_setMap;
 int g_gameMap[MAP_HSIZE][MAP_WSIZE];
 WINDOW* SetMap::win1 = nullptr;
 WINDOW* SetMap::win2 = nullptr;
-// SetMap g_setMap = SetMap();
-// int g_gameMap = { 0 };
-// 과제 조건: map을 txt로 구현 ->
-// 1. clearMap 2. setOnMap으로 움직이는 오브젝트 위치 설정
+/* unuse */
 void SetMap::clearMap()
 {
   memset(g_gameMap, 0, sizeof(g_gameMap));
@@ -31,12 +28,17 @@ void SetMap::setOnMap(WINDOW* win, const Point& p, GameObject obj)
   g_gameMap[p.y][p.x] = obj;
   // test
   // cout << obj << endl;
-  mvwaddch(win1, p.y, p.x, obj);
+  if (obj == GAMEOBJECT_EMPTY) {
+    mvwaddch(win1, p.y, p.x, ' ');
+  }
+  else {
+    mvwaddch(win1, p.y, p.x, obj);
+  }
   refresh();
   wrefresh(win1);
-  // mvprintw(40, 40, )
 }
 
+/* unuse */
 void SetMap::delay()
 {
   using namespace std::this_thread;
@@ -44,16 +46,23 @@ void SetMap::delay()
   sleep_for(milliseconds(50));
 }
 
-void SetMap::printAll(WINDOW* win1)
+void SetMap::printAll(WINDOW* win)
 {
-  // clear();
   for (int i = 0; i < MAP_HSIZE; i++) {
     for (int j = 0; j < MAP_WSIZE; j++) {
-      mvwaddch(win1, i, j, g_gameMap[i][j]);
-      // cout << g_gameMap[i][j] << ' ';
+      mvwaddch(win, i, j, g_gameMap[i][j]);
     }
-    // cout << endl;
   }
   refresh(); // getch는 refresh를 포함한다.
-  wrefresh(win1);
+  wrefresh(win);
+}
+
+void SetMap::drawBorder() const
+{
+  wattron(SetMap::win1, COLOR_PAIR(1));
+  wborder(SetMap::win1, '*', '*', '*', '*', '*', '*', '*', '*');
+  wattroff(SetMap::win1, COLOR_PAIR(1));
+  wattron(SetMap::win1, COLOR_PAIR(2));
+  wattron(SetMap::win2, COLOR_PAIR(2));
+  wborder(SetMap::win2, '|', '|', '-', '-', '*', '*', '*', '*');
 }

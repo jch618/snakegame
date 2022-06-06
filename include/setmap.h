@@ -18,7 +18,7 @@ enum GameObject {
   GAMEOBJECT_PORTAL = '*',
   GAMEOBJECT_APPLE = 'I',
   GAMEOBJECT_POISION = 'P',
-  GAMEOBJECT_EMPTY = ' '
+  GAMEOBJECT_EMPTY = 0
 };
 class SetMap {
 public:
@@ -29,6 +29,7 @@ public:
   void refreshScreen(WINDOW* win1);
   void setOnMap(WINDOW* win, const Point& p, GameObject obj);
   void printAll(WINDOW* win1);
+  void drawBorder() const;
 };
 
 

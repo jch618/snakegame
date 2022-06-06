@@ -24,8 +24,8 @@ public:
   Snake(int y=MAP_HSIZE/2, int x=MAP_WSIZE/2): size(3) {
     head.y = y;
     head.x = x;
-    body.push_back({ head.y, head.x + 1 });
-    body.push_back({ head.y, head.x + 2 });
+    body.emplace_back(head.y, head.x + 1);
+    body.emplace_back(head.y, head.x + 2);
   }
   Point getPos() const { return head; }
   int getSize() const { return size; }
@@ -34,7 +34,7 @@ public:
   void decreaseSize();
   void getArrow(int key);
   void move();
-  void draw() const;
+  void draw(Point prevPos) const;
   bool isDie() { return die; }
   void printSnake() const;
   void conflictCheck();

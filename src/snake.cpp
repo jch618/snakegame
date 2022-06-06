@@ -30,9 +30,10 @@ void Snake::move()
   for (auto& p : body) {
     swap(prevPos, p);
   }
-
-  draw();
   conflictCheck();
+
+  draw(prevPos);
+  // conflictCheck();
 }
 
 void Snake::getArrow(int key)
@@ -55,28 +56,26 @@ void Snake::getArrow(int key)
   }
 }
 
-/* new */
 void Snake::conflictCheck()
 {
   int& headPos = g_gameMap[head.y][head.x];
   if (headPos == GAMEOBJECT_BLOCK) {
-    cout << "1";
+    // mvwprintw(SetMap::win2, 0, 0, "conflict with block");
     die = true;
   }
   else if (headPos == GAMEOBJECT_SNAKE_BODY) {
-    cout << "2";
+    // mvwprintw(SetMap::win2, 0, 0, "conflict with body");
     die = true;
   }
   else if (headPos == GAMEOBJECT_APPLE) {
-    cout << "3";
+    // mvwprintw(SetMap::win2, 0, 0, "conflict with apple");
     increaseSize();
   }
   else if (headPos == GAMEOBJECT_POISION) {
-    cout << "4";
+    // mvwprintw(SetMap::win2, 0, 0, "conflict with apple");
     decreaseSize();
   }
   else if (headPos == GAMEOBJECT_PORTAL) {
-    cout << "5";
 
   }
 }
@@ -86,7 +85,7 @@ void Snake::increaseSize()
   int y = body[body.size() - 2].y - body[body.size() - 1].y;
   int x = body[body.size() - 2].x - body[body.size() - 1].x;
 
-  body.push_back({ y, x });
+  body.emplace_back(y, x);
   size++;
 }
 
@@ -96,10 +95,13 @@ void Snake::decreaseSize()
   size--;
 }
 
-void Snake::draw() const
+void Snake::draw(Point prevPos) const
 {
   g_setMap.setOnMap(SetMap::win1, head, GAMEOBJECT_SNAKE_HEAD);
   for (const auto& p : body) {
     g_setMap.setOnMap(SetMap::win1, p, GAMEOBJECT_SNAKE_BODY);
   }
+  // temporary
+  wattron(SetMap::win1, COLOR_PAIR(1));
+  g_setMap.setOnMap(SetMap::win1, prevPos, GAMEOBJECT_EMPTY);
 }

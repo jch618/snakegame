@@ -5,7 +5,7 @@ using namespace std;
 void GameSet::gameStart()
 {
   srand(time(nullptr));
-  
+
   setlocale(LC_ALL, "");
   initscr();
   resize_term(SCREEN_HSIZE, SCREEN_WSIZE);
@@ -19,7 +19,6 @@ void GameSet::gameStart()
   start_color();
   init_pair(1, COLOR_GREEN, COLOR_YELLOW);
   init_pair(2, COLOR_WHITE, COLOR_BLACK);
-  // border('*','*','*','*','*','*','*','*');
   refresh();
   // bkgd(COLOR_PAIR(1));
   // attron(COLOR_PAIR(1));
@@ -29,16 +28,16 @@ void GameSet::gameStart()
   wbkgd(SetMap::win1, COLOR_PAIR(1));
   wbkgd(SetMap::win2, COLOR_PAIR(2));
   // box(SetMap::win1, 0, 0);
+
   // wattron(SetMap::win1, COLOR_PAIR(1));
   // wborder(SetMap::win1, '*', '*', '*', '*', '*', '*', '*', '*');
   // wattroff(SetMap::win1, COLOR_PAIR(1));
-  // wattron(SetMap::win1, COLOR_PAIR(2));
+  wattron(SetMap::win1, COLOR_PAIR(2));
   // wborder(SetMap::win2, '*', '*', '*', '*', '*', '*', '*', '*');
+
   refresh();
   wrefresh(SetMap::win1);
   wrefresh(SetMap::win2);
-  getch();
-  //mvwprintw(SetMap::win1, y, x, " ")
   playingGame();
 }
 
@@ -49,8 +48,11 @@ void GameSet::intro()
 
 void GameSet::playingGame()
 {
+  ItemManager itemManager;
   Snake snake;
-  // g_setMap = SetMap();
+  g_setMap = SetMap();
+  // itemManager.setTime();
+
   while (1) {
     if (snake.isDie()) {
       break;
@@ -63,24 +65,27 @@ void GameSet::playingGame()
       snake.increaseSize();
       flushinp();
     }
-    g_setMap.clearMap();
+    // g_setMap.clearMap();
     werase(SetMap::win1);
-    wattron(SetMap::win1, COLOR_PAIR(1));
-    wborder(SetMap::win1, '*', '*', '*', '*', '*', '*', '*', '*');
-    wattroff(SetMap::win1, COLOR_PAIR(1));
-    wattron(SetMap::win1, COLOR_PAIR(2));
-    wattron(SetMap::win2, COLOR_PAIR(2));
-    wborder(SetMap::win2, '|', '|', '-', '-', '*', '*', '*', '*');
-    snake.getArrow(key);
-    /* snake */
-    snake.move();
+    g_setMap.drawBorder();
 
+    /* snake */
+    snake.getArrow(key);
+    snake.move();
     // snake.draw(); // in move
     /* snake end */
+
+    wattron(SetMap::win1, COLOR_PAIR(2));
+    
+    /* item manager */
+    itemManager.generate();
+    /* item manager end */
+
+    g_setMap.printAll(SetMap::win2);
     g_setMap.refreshScreen(SetMap::win1);
-    // g_setMap.printAll(SetMap::win1);
-    // flushinp();
   }
+  nodelay(stdscr, false);
+  getch();
   endGame();
 }
 

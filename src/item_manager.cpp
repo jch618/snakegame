@@ -1,5 +1,7 @@
 #include "../include/item_manager.h"
 #include <cstdlib>
+#include <algorithm>
+using namespace std;
 
 Item ItemManager::makeItem(GameObject itemType)
 {
@@ -31,27 +33,53 @@ void ItemManager::setTime()
 
 void ItemManager::generate()
 {
-  if (!timeCheck()) {
-    return;
-  }
-  if (!isApplesFull() && !isPoisionsFull()) {
-    if (rand() % 2 == 0) {
-      addItem(GAMEOBJECT_APPLE);
+  /* if time went enough create item */
+  if (checkTime()) {
+    if (!isApplesFull() && !isPoisionsFull()) {
+      if (rand() % 2 == 0) {
+        addItem(GAMEOBJECT_APPLE);
+      }
+      else {
+        addItem(GAMEOBJECT_POISION);
+      }
     }
-    else {
+    else if (isApplesFull()) {
       addItem(GAMEOBJECT_POISION);
     }
+    else if (isPoisionsFull()) {
+      addItem(GAMEOBJECT_APPLE);
+    }
   }
-  else if (isApplesFull()) {
-    addItem(GAMEOBJECT_POISION);
-  }
-  else if (isPoisionsFull()) {
-    addItem(GAMEOBJECT_APPLE);
-  }
+  checkItemState();
   drawItems();
+  removeInvalidItem();
 }
 
-bool ItemManager::timeCheck()
+bool ItemManager::isApplesFull() const
+{
+  return std::count_if(apples.begin(), apples.end(),
+                       [](Item item) { return item.invalid; }) >= APPLE_MAX;
+}
+
+bool ItemManager::isPoisionsFull() const
+{
+  return std::count_if(poisions.begin(), poisions.end(),
+                       [](Item item) { return item.invalid; }) >= POISION_MAX;
+}
+
+void ItemManager::checkItemState()
+{
+  for (auto& i : apples) {
+    i.checkTime();
+    i.checkCollision();
+  }
+  for (auto& i : poisions) {
+    i.checkTime();
+    i.checkCollision();
+  }
+}
+
+bool ItemManager::checkTime()
 {
   if (clock() - prevTime >= TIME_INTERVAL) {
     setTime();
@@ -60,21 +88,49 @@ bool ItemManager::timeCheck()
   return false;
 }
 
-void ItemManager::checkInvalidItem()
+void ItemManager::removeItem(const Point& pos)
 {
-  for (const auto& apple : apples) {
-    if (apple.invalid) {
-      apples.pop_front();
+  auto it = apples.begin();
+  while (it != apples.end()) {
+    if (it->pos == pos) {
+      it = apples.erase(it);
+    }
+    else {
+      it++;
     }
   }
-  for (const auto& poision : poisions) {
-    if (poision.invalid) {
-      poisions.pop_front();
+  it = poisions.begin();
+  while (it != poisions.end()) {
+    if (it->pos == pos) {
+      it = poisions.erase(it);
+    }
+    else {
+      it++;
     }
   }
 }
 
-/*  */
+void ItemManager::removeInvalidItem()
+{
+  auto it = apples.begin();
+  while (it != apples.end()) {
+    if (it->invalid) {
+      it = apples.erase(it);
+    }
+    else {
+      it++;
+    }
+  }
+  it = poisions.begin();
+  while (it != poisions.end()) {
+    if (it->invalid) {
+      it = poisions.erase(it);
+    }
+    else {
+      it++;
+    }
+  }
+}
 
 void ItemManager::drawItems() const
 {
