@@ -2,7 +2,7 @@
 #include "point.h"
 #include <ctime>
 
-#define LIFE_TIME 20000
+#define LIFE_TIME 60000
 
 extern SetMap g_setMap;
 extern int g_gameMap[MAP_HSIZE][MAP_WSIZE];

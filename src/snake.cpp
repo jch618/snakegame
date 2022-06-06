@@ -30,10 +30,10 @@ void Snake::move()
   for (auto& p : body) {
     swap(prevPos, p);
   }
-  conflictCheck();
-
+  checkCollision();
+  checkSnakeState();
   draw(prevPos);
-  // conflictCheck();
+  // checkCollision();
 }
 
 void Snake::getArrow(int key)
@@ -56,7 +56,7 @@ void Snake::getArrow(int key)
   }
 }
 
-void Snake::conflictCheck()
+void Snake::checkCollision()
 {
   int& headPos = g_gameMap[head.y][head.x];
   if (headPos == GAMEOBJECT_BLOCK) {
@@ -77,6 +77,12 @@ void Snake::conflictCheck()
   }
   else if (headPos == GAMEOBJECT_PORTAL) {
 
+  }
+}
+void Snake::checkSnakeState()
+{
+  if (size < 3) {
+    die = true;
   }
 }
 

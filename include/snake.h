@@ -39,7 +39,8 @@ public:
     g_setMap.setOnMap(SetMap::win1, pos, GAMEOBJECT_EMPTY);
   }
   bool isDie() { return die; }
+  void checkSnakeState();
   void printSnake() const;
-  void conflictCheck();
+  void checkCollision();
 };
 #endif
