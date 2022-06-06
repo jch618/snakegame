@@ -27,10 +27,10 @@ setmap.o : $(SRC)/setmap.cpp $(INCLUDE)/setmap.h $(INCLUDE)/point.h
 point.o : $(SRC)/point.cpp $(INCLUDE)/point.h
 	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $<
 
-item.o : $(SRC)/item.cpp
+item.o : $(SRC)/item.cpp $(INCLUDE)/item.h $(INCLUDE)/setmap.h $(INCLUDE)/point.h
 	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $< $(LIB)
 
-item_manager.o : $(SRC)/item_manager.cpp
+item_manager.o : $(SRC)/item_manager.cpp $(INCLUDE)/item_manager.h $(INCLUDE)/item.h
 	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $< $(LIB)
 
 main.o : $(SRC)/main.cpp $(INCLUDE)/gameset.h
