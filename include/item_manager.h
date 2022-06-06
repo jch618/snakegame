@@ -19,8 +19,6 @@ public:
   void addItem(GameObject itemType);
   Item makeItem(GameObject itemType);
 
-  /* new  */
-  void removeItem(const Point& pos);
   void drawItems() const;
   void checkItemState();
   bool checkTime();

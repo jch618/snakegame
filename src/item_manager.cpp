@@ -25,7 +25,6 @@ void ItemManager::addItem(GameObject itemType)
   }
 }
 
-/* NEW  */
 void ItemManager::setTime()
 {
   prevTime = clock();
@@ -86,28 +85,6 @@ bool ItemManager::checkTime()
     return true;
   }
   return false;
-}
-
-void ItemManager::removeItem(const Point& pos)
-{
-  auto it = apples.begin();
-  while (it != apples.end()) {
-    if (it->pos == pos) {
-      it = apples.erase(it);
-    }
-    else {
-      it++;
-    }
-  }
-  it = poisions.begin();
-  while (it != poisions.end()) {
-    if (it->pos == pos) {
-      it = poisions.erase(it);
-    }
-    else {
-      it++;
-    }
-  }
 }
 
 void ItemManager::removeInvalidItem()
