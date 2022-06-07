@@ -1,5 +1,6 @@
 #include "../include/gameset.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 void GameSet::gameStart()
@@ -13,7 +14,6 @@ void GameSet::gameStart()
   noecho(); // 입력이 화면에 나타나지 않음
   keypad(stdscr, TRUE);
   //
-  nodelay(stdscr, true);
   //
   curs_set(0);
   start_color();
@@ -38,6 +38,8 @@ void GameSet::gameStart()
   refresh();
   wrefresh(SetMap::win1);
   wrefresh(SetMap::win2);
+
+  nodelay(stdscr, true);
   playingGame();
 }
 
@@ -51,7 +53,7 @@ void GameSet::playingGame()
   ItemManager itemManager;
   Snake snake;
   g_setMap = SetMap();
-  // itemManager.setTime();
+  itemManager.setTime();
 
   while (1) {
     if (snake.isDie()) {
@@ -81,7 +83,7 @@ void GameSet::playingGame()
     itemManager.generate();
     /* item manager end */
 
-    // g_setMap.printAll(SetMap::win2);
+    g_setMap.printAll(SetMap::win2);
     g_setMap.refreshScreen(SetMap::win1);
   }
   nodelay(stdscr, false);

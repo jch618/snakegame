@@ -13,7 +13,7 @@ void Item::checkCollision()
 {
   if (g_gameMap[pos.y][pos.x] == GAMEOBJECT_SNAKE_HEAD) {
     invalid = true;
-    // draw();
+    draw();
   }
 }
 
@@ -31,6 +31,6 @@ void Item::checkTime()
 {
   if (clock() - bornTime >= LIFE_TIME) {
     invalid = true;
-    // draw();
+    draw(); // 이걸 안하면 배열에서 안사라진다
   }
 }
