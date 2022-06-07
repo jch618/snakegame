@@ -8,14 +8,11 @@ VERSION := -std=c++11
 LIB := -lncursesw
 OBJ := -g -c
 EXEC := -g -o
-# g++ -std=c++11 -g -o bin main.cpp snake.cpp point.cpp setmap.cpp gameset.cpp -lncursesw
-# snakegame: snakegame.cpp
-# 	g++ -std=c++11 -g -o $@ $< -lncursesw
 
 $(EXCUTABLE) : main.o snake.o point.o setmap.o gameset.o item.o item_manager.o
 	$(CXX) $(VERSION) $(EXEC) $@ $^ $(LIB)
 
-gameset.o : $(SRC)/gameset.cpp $(INCLUDE)/gameset.h $(INCLUDE)/setmap.h $(INCLUDE)/snake.h
+gameset.o : $(SRC)/gameset.cpp $(INCLUDE)/gameset.h $(INCLUDE)/setmap.h $(INCLUDE)/snake.h $(INCLUDE)/item_manager.h
 	$(CXX) $(VERSION) $(OBJ) $(INCLUDES) $< $(LIB)
 
 snake.o : $(SRC)/snake.cpp $(INCLUDE)/snake.h $(INCLUDE)/point.h $(INCLUDE)/setmap.h $(INCLUDE)/gameset.h
