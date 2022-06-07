@@ -25,16 +25,13 @@ void ItemManager::addItem(GameObject itemType)
   }
 }
 
-void ItemManager::setTime()
-{
-  prevTime = clock();
-}
-
 void ItemManager::generate()
 {
   /* if time went enough create item */
+  checkItemState(); // check time and collision
+  removeInvalidItem();
   if (checkTime()) {
-    if (!isApplesFull() && !isPoisionsFull()) {
+    if (!isItemsFull()) {
       if (rand() % 2 == 0) {
         addItem(GAMEOBJECT_APPLE);
       }
@@ -42,39 +39,24 @@ void ItemManager::generate()
         addItem(GAMEOBJECT_POISION);
       }
     }
-    else if (isApplesFull()) {
-      addItem(GAMEOBJECT_POISION);
-    }
-    else if (isPoisionsFull()) {
-      addItem(GAMEOBJECT_APPLE);
-    }
   }
-  checkItemState();
   drawItems();
-  removeInvalidItem();
 }
 
-bool ItemManager::isApplesFull() const
+bool ItemManager::isItemsFull() const
 {
-  return std::count_if(apples.begin(), apples.end(),
-                       [](Item item) { return item.invalid; }) >= APPLE_MAX;
-}
-
-bool ItemManager::isPoisionsFull() const
-{
-  return std::count_if(poisions.begin(), poisions.end(),
-                       [](Item item) { return item.invalid; }) >= POISION_MAX;
+  return apples.size() + poisions.size() >= ITEM_MAX;
 }
 
 void ItemManager::checkItemState()
 {
   for (auto& i : apples) {
-    i.checkTime();
     i.checkCollision();
+    i.checkTime();
   }
   for (auto& i : poisions) {
-    i.checkTime();
     i.checkCollision();
+    i.checkTime();
   }
 }
 

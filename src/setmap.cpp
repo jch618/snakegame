@@ -34,8 +34,9 @@ void SetMap::setOnMap(WINDOW* win, const Point& p, GameObject obj)
   else {
     mvwaddch(win1, p.y, p.x, obj);
   }
-  refresh();
-  wrefresh(win1);
+  // refresh();
+  // wrefresh(win1);
+  // wrefresh(win2);
 }
 
 /* unuse */

@@ -76,12 +76,12 @@ void GameSet::playingGame()
     /* snake end */
 
     wattron(SetMap::win1, COLOR_PAIR(2));
-    
+
     /* item manager */
     itemManager.generate();
     /* item manager end */
 
-    g_setMap.printAll(SetMap::win2);
+    // g_setMap.printAll(SetMap::win2);
     g_setMap.refreshScreen(SetMap::win1);
   }
   nodelay(stdscr, false);
