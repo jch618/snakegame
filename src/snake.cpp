@@ -1,7 +1,20 @@
 #include "../include/snake.h"
 #include <iostream>
 #include <algorithm>
+#include <string>
+#include <cstdlib>
 using namespace std;
+
+Snake::Snake(int y, int x): size(3) {
+  while (g_gameMap[y][x] != 0) {
+    y = rand() % MAP_HSIZE;
+    x = rand() % MAP_WSIZE;
+  }
+  head.y = y;
+  head.x = x;
+  body.emplace_back(head.y, head.x + 1);
+  body.emplace_back(head.y, head.x + 2);
+}
 
 void Snake::move()
 {
@@ -81,7 +94,60 @@ void Snake::checkCollision()
 
 void Snake::onCollisionWithGate()
 {
-
+  auto positions = g_blockManager.getGatePos();
+  if (positions[0] == head) {
+    head = positions[1];
+  }
+  else {
+    head = positions[0];
+  }
+  int dy[4] = { -1, 0, 1, 0 }; // up right down left
+  int dx[4] = { 0, 1, 0, -1 };
+  int idx[4] = { 0, 1, 3, 2 };
+  int nextY, nextX, d = (int)direction;
+  for (const auto& i : idx) {
+    nextY = head.y + dy[(d + i) % 4];
+    nextX = head.x + dx[(d + i) % 4];
+    if (nextY < 0 || nextX < 0 || nextY >= MAP_HSIZE || nextX >= MAP_HSIZE) {
+      continue;
+    }
+    if (g_gameMap[nextY][nextX] == 0) {
+      direction = (Direction)((d + i) % 4);
+      //
+      mvwaddch(SetMap::win2, 0, 0, (int)direction + '0');
+      wrefresh(SetMap::win2);
+      //
+      break;
+    }
+  }
+  // // current directoin
+  // nextY = head.y + dy[direction];
+  // nextX = head.x + dx[direction];
+  // if (g_gameMap[nextY][nextX] == 0) {
+  //   direction = DIRECTION_UP;
+  //   return;
+  // }
+  // // clockwise
+  // nextY = head.y + dy[(direction + 1) % 4];
+  // nextX = head.x + dx[(direction + 1) % 4];
+  // if (g_gameMap[nextY][nextX] == 0) {
+  //   direction = DIRECTION_RIGHT;
+  //   return;
+  // }
+  // // counter clockwise
+  // nextY = head.y + dy[(direction + 3) % 4];
+  // nextX = head.x + dx[(direction + 3) % 4];
+  // if (g_gameMap[nextY][nextX] == 0) {
+  //   direction = DIRECTION_DOWN;
+  //   return;
+  // }
+  // //
+  // nextY = head.y + dy[(direction + 2) % 4];
+  // nextX = head.x + dx[(direction + 2) % 4];
+  // if (g_gameMap[nextY][nextX] == 0) {
+  //   direction = DIRECTION_LEFT;
+  //   return;
+  // }
 }
 
 void Snake::checkSnakeState()

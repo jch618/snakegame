@@ -22,7 +22,7 @@ extern BlockManager g_blockManager;
 class GameSet {
   int gameLevel;
 public:
-  GameSet(int level=1): gameLevel(level) {}
+  GameSet(int level=5): gameLevel(level) {}
   void intro();
   void playingGame();
   void gameStart();

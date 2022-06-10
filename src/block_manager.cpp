@@ -5,6 +5,10 @@
 using namespace std;
 //
 BlockManager g_blockManager;
+std::vector<Point> BlockManager::getGatePos() const
+{
+  return vector<Point>{ gates[0].pos, gates[1].pos };
+}
 
 void BlockManager::addBlock(GameObject blockType, int y, int x) {
   if (blockType == GAMEOBJECT_BLOCK) {
@@ -28,10 +32,10 @@ void BlockManager::addGates()
   }
   gates.emplace_back(blocks[idx1].pos.y, blocks[idx1].pos.x);
   //
-  string str = to_string(blocks[idx1].pos.y);
-  str += "," + to_string(blocks[idx1].pos.x);
-  mvwprintw(SetMap::win2, 0, 0, str.c_str());
-  wrefresh(SetMap::win2);
+  // string str = to_string(blocks[idx1].pos.y);
+  // str += "," + to_string(blocks[idx1].pos.x);
+  // mvwprintw(SetMap::win2, 0, 0, str.c_str());
+  // wrefresh(SetMap::win2);
   //
   gates.emplace_back(blocks[idx2].pos.y, blocks[idx2].pos.x);
   // 뒤의 것부터 먼저 지워야 함

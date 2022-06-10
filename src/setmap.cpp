@@ -16,8 +16,6 @@ void SetMap::clearMap()
   memset(g_gameMap, 0, sizeof(g_gameMap));
 }
 
-
-
 void SetMap::refreshScreen(WINDOW* win1)
 {
   refresh();

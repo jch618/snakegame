@@ -5,7 +5,7 @@
 #include "block.h"
 #include "setmap.h"
 
-#define GATE_LIFE_TIME 10000
+#define GATE_LIFE_TIME 15000
 
 extern SetMap g_setMap;
 class Gate {

@@ -10,12 +10,13 @@
 #define GATE_TIME_INTERVAL 20000
 
 class BlockManager {
-  clock_t prevTime = 0;
+  clock_t prevTime;
   std::vector<Block> blocks;
   std::vector<Block> immuneBlocks;
   std::vector<Gate> gates;
 public:
   BlockManager() {}
+  void initTime() { prevTime = GATE_TIME_INTERVAL - 10000; }
   void setTime() { prevTime = clock(); }
   void generate();
   bool checkTime();
@@ -25,5 +26,6 @@ public:
   void checkGateState();
   void removeInvalidGate();
   void drawBlocks() const;
+  std::vector<Point> getGatePos() const;
 };
 #endif

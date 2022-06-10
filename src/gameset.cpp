@@ -92,7 +92,7 @@ void GameSet::playingGame()
   nodelay(stdscr, true);
   g_setMap = SetMap();
   g_itemManager.setTime();
-  g_blockManager.setTime();
+  g_blockManager.initTime();
 
   while (1) {
     if (snake.isDie()) {
