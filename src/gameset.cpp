@@ -1,6 +1,7 @@
 #include "../include/gameset.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
 
 void GameSet::gameStart()
@@ -23,8 +24,9 @@ void GameSet::gameStart()
   // bkgd(COLOR_PAIR(1));
   wattron(SetMap::win1, COLOR_PAIR(1));
 
-  SetMap::win1 = newwin(MAP_HSIZE, MAP_WSIZE, 0, 0);
-  SetMap::win2 = newwin(MAP_HSIZE, SCREEN_WSIZE - MAP_WSIZE, 0, MAP_WSIZE);
+  SetMap::win1 = newwin(MAP_HSIZE, MAP_WSIZE, 0, 0); // HSIZE: 40
+  SetMap::win2 = newwin(10, SCREEN_WSIZE - MAP_WSIZE, 0, MAP_WSIZE);
+  SetMap::win3 = newwin(10, SCREEN_WSIZE - MAP_WSIZE, 10, MAP_WSIZE);
   wbkgd(SetMap::win1, COLOR_PAIR(1));
   wbkgd(SetMap::win2, COLOR_PAIR(2));
   wattron(SetMap::win1, COLOR_PAIR(2));
@@ -33,14 +35,14 @@ void GameSet::gameStart()
   wrefresh(SetMap::win1);
   wrefresh(SetMap::win2);
 
-  g_setMap.printAll(SetMap::win1);
+  // g_setMap.printAll(SetMap::win1);
   //
   // g_setMap.printAll(SetMap::win2);
   // getch();
   playingGame();
 }
 
-void loadStage(int level, BlockManager& blockManager)
+void loadStage(int level)
 {
   string fileName("./txt/stage");
   fileName += to_string(level);
@@ -64,11 +66,11 @@ void loadStage(int level, BlockManager& blockManager)
           break;
         case '1':
           g_gameMap[i][j] = GAMEOBJECT_BLOCK;
-          blockManager.addBlock(GAMEOBJECT_BLOCK, i, j);
+          g_blockManager.addBlock(GAMEOBJECT_BLOCK, i, j);
           break;
         case '2':
           g_gameMap[i][j] = GAMEOBJECT_IMMUNE_BLOCK;
-          blockManager.addBlock(GAMEOBJECT_IMMUNE_BLOCK, i, j);
+          g_blockManager.addBlock(GAMEOBJECT_IMMUNE_BLOCK, i, j);
           break;
       }
     }
@@ -85,30 +87,49 @@ void GameSet::playingGame()
 {
   g_itemManager = ItemManager();
   g_blockManager = BlockManager();
-  loadStage(gameLevel, g_blockManager);
+  loadStage(gameLevel);
 
-  Snake snake;
+  // Snake snake(MAP_HSIZE/2, MAP_WSIZE/2, getGameLevel());
+  Snake snake(3, 3, getGameLevel());
   getch();
   nodelay(stdscr, true);
   g_setMap = SetMap();
   g_itemManager.setTime();
-  g_blockManager.initTime();
+  g_blockManager.setTime();
 
+  bool clear = false;
+  int prev = -1;
   while (1) {
+    if (snake.isFinished()) {
+      clear = true;
+      break;
+    }
     if (snake.isDie()) {
       break;
     }
     int key = getch();
+
     // g_setMap.refreshScreen(SetMap::win1);
-    // g_setMap.delay();
-    if (key == 'q') break;
+    if (key == 'q') {
+      break;
+    }
+    if (key == 'n') {
+      clear = true;
+      break;
+    }
     if (key == '1') {
       snake.increaseSize();
       flushinp();
     }
+    if (key != -1 && key == prev) {
+      flushinp();
+    }
+    prev = key;
+
+
     // g_setMap.clearMap();
     werase(SetMap::win1);
-    // g_setMap.drawBorder();
+    g_setMap.drawBorder();
 
     /* snake start */
     snake.getArrow(key);
@@ -127,21 +148,72 @@ void GameSet::playingGame()
     /* block_manager end */
 
     // g_setMap.printAll(SetMap::win2);
-    g_setMap.refreshScreen(SetMap::win1);
+    g_setMap.refreshScreen();
   }
   nodelay(stdscr, false);
+  if (clear) {
+    if (gameLevel == 5) {
+      clearGame();
+      endGame();
+      return;
+    }
+    gameLevel++;
+    playingGame();
+  }
+  else {
+    getch();
+    endGame();
+    return;
+  }
+}
+
+void GameSet::clearGame()
+{
+  // wattron(SetMap::win1, COLOR_PAIR(2));
+  wbkgd(SetMap::win1, COLOR_PAIR(2));
+  wclear(SetMap::win1);
+  // wclear(SetMap::win2);
+  // wclear(SetMap::win3);
+  mvwprintw(SetMap::win1, MAP_HSIZE/2, MAP_WSIZE/4, "you saved Kookmin university.");
+  wrefresh(SetMap::win1);
+  // wrefresh(SetMap::win2);
+  // wrefresh(SetMap::win3);
   getch();
-  endGame();
 }
 
 void GameSet::endGame()
 {
-  clear();
-  nodelay(stdscr, false);
-  mvwprintw(SetMap::win1, MAP_HSIZE/2, MAP_WSIZE/2, "Kookmin university.");
+  wattron(SetMap::win1, COLOR_PAIR(2));
+  wbkgd(SetMap::win1, COLOR_PAIR(2));
+  wclear(SetMap::win1);
+  // wclear(SetMap::win2);
+  // wclear(SetMap::win3);
+
+  mvwprintw(SetMap::win1, MAP_HSIZE/2, MAP_WSIZE/2, "Thank you.");
   wrefresh(SetMap::win1);
+  // wrefresh(SetMap::win2);
+  // wrefresh(SetMap::win3);
+  refresh();
   getch();
 
+  wclear(SetMap::win2);
+  wclear(SetMap::win3);
+  wrefresh(SetMap::win2);
+  wrefresh(SetMap::win3);
+
   delwin(SetMap::win1);
+  delwin(SetMap::win2);
+  delwin(SetMap::win3);
+
+  fstream fs("txt/kookmin.txt");
+  string txt;
+  int i = 0;
+  while (getline(fs, txt)) {
+    mvprintw(i, 0, txt.c_str());
+    i++;
+  }
+  getch();
+  fs.close();
+  
   endwin();
 }

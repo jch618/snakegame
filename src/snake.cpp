@@ -5,7 +5,7 @@
 #include <cstdlib>
 using namespace std;
 
-Snake::Snake(int y, int x): size(3) {
+Snake::Snake(int y, int x, int level): size(3), score(level, 3) {
   while (g_gameMap[y][x] != 0) {
     y = rand() % MAP_HSIZE;
     x = rand() % MAP_WSIZE;
@@ -44,8 +44,13 @@ void Snake::move()
     swap(lastPos, p);
   }
   checkCollision();
+  /* score */
+  score.setSize(size);
+  /* end */
   checkSnakeState();
   draw();
+  /* score */
+  score.draw();
 }
 
 void Snake::getArrow(int key)
@@ -80,14 +85,23 @@ void Snake::checkCollision()
 
     case GAMEOBJECT_APPLE:
       increaseSize();
+      /* score */
+      score.incApple();
+      /* end */
       break;
 
     case GAMEOBJECT_POISION:
       decreaseSize();
+      /* score */
+      score.incPoision();
+      /* end */
       break;
 
     case GAMEOBJECT_PORTAL:
       onCollisionWithGate();
+      /* score */
+      score.incGate();
+      /* end */
       break;
   }
 }
@@ -120,34 +134,6 @@ void Snake::onCollisionWithGate()
       break;
     }
   }
-  // // current directoin
-  // nextY = head.y + dy[direction];
-  // nextX = head.x + dx[direction];
-  // if (g_gameMap[nextY][nextX] == 0) {
-  //   direction = DIRECTION_UP;
-  //   return;
-  // }
-  // // clockwise
-  // nextY = head.y + dy[(direction + 1) % 4];
-  // nextX = head.x + dx[(direction + 1) % 4];
-  // if (g_gameMap[nextY][nextX] == 0) {
-  //   direction = DIRECTION_RIGHT;
-  //   return;
-  // }
-  // // counter clockwise
-  // nextY = head.y + dy[(direction + 3) % 4];
-  // nextX = head.x + dx[(direction + 3) % 4];
-  // if (g_gameMap[nextY][nextX] == 0) {
-  //   direction = DIRECTION_DOWN;
-  //   return;
-  // }
-  // //
-  // nextY = head.y + dy[(direction + 2) % 4];
-  // nextX = head.x + dx[(direction + 2) % 4];
-  // if (g_gameMap[nextY][nextX] == 0) {
-  //   direction = DIRECTION_LEFT;
-  //   return;
-  // }
 }
 
 void Snake::checkSnakeState()

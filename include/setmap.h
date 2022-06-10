@@ -29,10 +29,13 @@ public:
   static WINDOW* win2;
   static WINDOW* win3;
   void clearMap();
-  void refreshScreen(WINDOW* win1);
+  void refreshScreen();
   void setOnMap(WINDOW* win, const Point& p, GameObject obj);
   void printAll(WINDOW* win1);
   void drawBorder() const;
+  void mvPrint(WINDOW* win, int y, int x, const char* chars) const;
+  void mvAddChar(WINDOW* win, int y, int x, char c) const;
+
 };
 // void loadStage(int level);
 

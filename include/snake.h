@@ -7,6 +7,7 @@
 #include "setmap.h"
 #include "gameset.h"
 #include "block_manager.h"
+#include "score.h"
 
 extern int g_gameMap[MAP_HSIZE][MAP_WSIZE];
 extern SetMap g_setMap;
@@ -17,14 +18,14 @@ enum Direction {
 };
 
 class Snake {
-  Point head;
+  Point head, lastPos;
   std::vector<Point> body;
-  Point lastPos;
   int size;
   Direction direction;
   bool die = false;
+  Score score;
 public:
-  Snake(int y=MAP_HSIZE/2, int x=MAP_WSIZE/2);
+  Snake(int y=MAP_HSIZE/2, int x=MAP_WSIZE/2, int level=1);
   Point getPos() const { return head; }
   int getSize() const { return size; }
   void setDirection(Direction d) { direction = d; }
@@ -41,5 +42,6 @@ public:
   void checkSnakeState();
   void printSnake() const;
   void checkCollision();
+  bool isFinished() { return score.isMissionFinished(); }
 };
 #endif

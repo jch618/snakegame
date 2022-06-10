@@ -7,7 +7,7 @@
 #include "block.h"
 #include "gate.h"
 
-#define GATE_TIME_INTERVAL 20000
+#define GATE_TIME_INTERVAL 22200
 
 class BlockManager {
   clock_t prevTime;
@@ -15,8 +15,7 @@ class BlockManager {
   std::vector<Block> immuneBlocks;
   std::vector<Gate> gates;
 public:
-  BlockManager() {}
-  void initTime() { prevTime = GATE_TIME_INTERVAL - 10000; }
+  BlockManager(): prevTime(0) {}
   void setTime() { prevTime = clock(); }
   void generate();
   bool checkTime();

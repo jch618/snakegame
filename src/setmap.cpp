@@ -16,11 +16,12 @@ void SetMap::clearMap()
   memset(g_gameMap, 0, sizeof(g_gameMap));
 }
 
-void SetMap::refreshScreen(WINDOW* win1)
+void SetMap::refreshScreen()
 {
   refresh();
   wrefresh(win1);
   wrefresh(win2);
+  wrefresh(win3);
   using namespace std::this_thread;
   using namespace std::chrono;
   sleep_for(milliseconds(100));
@@ -52,10 +53,21 @@ void SetMap::printAll(WINDOW* win)
 
 void SetMap::drawBorder() const
 {
-  wattron(SetMap::win1, COLOR_PAIR(1));
-  wborder(SetMap::win1, '*', '*', '*', '*', '*', '*', '*', '*');
-  wattroff(SetMap::win1, COLOR_PAIR(1));
+  // wattron(SetMap::win1, COLOR_PAIR(1));
+  // wborder(SetMap::win1, '*', '*', '*', '*', '*', '*', '*', '*');
+  // wattroff(SetMap::win1, COLOR_PAIR(1));
   wattron(SetMap::win1, COLOR_PAIR(2));
   wattron(SetMap::win2, COLOR_PAIR(2));
   wborder(SetMap::win2, '|', '|', '-', '-', '*', '*', '*', '*');
+  wborder(SetMap::win3, '|', '|', '-', '-', '*', '*', '*', '*');
+}
+
+void SetMap::mvPrint(WINDOW* win, int y, int x, const char* chars) const
+{
+  mvwprintw(win, y, x, chars);
+}
+
+void SetMap::mvAddChar(WINDOW* win, int y, int x, char c) const
+{
+  mvwaddch(win, y, x, c);
 }

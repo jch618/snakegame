@@ -6,7 +6,7 @@
 #include "item_manager.h"
 #include "block_manager.h"
 #define SCREEN_HSIZE 40
-#define SCREEN_WSIZE 80
+#define SCREEN_WSIZE 60
 
 
 // game의 설정변수들 저장
@@ -22,11 +22,13 @@ extern BlockManager g_blockManager;
 class GameSet {
   int gameLevel;
 public:
-  GameSet(int level=5): gameLevel(level) {}
+  GameSet(int level=1): gameLevel(level) {}
   void intro();
   void playingGame();
   void gameStart();
+  void clearGame();
   void endGame();
+  int getGameLevel() const { return gameLevel; }
 };
 
 #endif

@@ -1,6 +1,7 @@
 *.o
-*.txt
+memo.txt
 token
 bin
 snamegame.*
 snakegame
+myMakefile

@@ -31,12 +31,6 @@ void BlockManager::addGates()
     swap(idx1, idx2);
   }
   gates.emplace_back(blocks[idx1].pos.y, blocks[idx1].pos.x);
-  //
-  // string str = to_string(blocks[idx1].pos.y);
-  // str += "," + to_string(blocks[idx1].pos.x);
-  // mvwprintw(SetMap::win2, 0, 0, str.c_str());
-  // wrefresh(SetMap::win2);
-  //
   gates.emplace_back(blocks[idx2].pos.y, blocks[idx2].pos.x);
   // 뒤의 것부터 먼저 지워야 함
   blocks.erase(blocks.begin() + idx2);
@@ -45,17 +39,9 @@ void BlockManager::addGates()
 
 void BlockManager::generate()
 {
-  //
-  mvwprintw(SetMap::win2, 2, 0, "generate");
-  wrefresh(SetMap::win2);
-  //
   checkGateState(); // check time and collision
   removeInvalidGate();
   if (checkTime()) {
-    //
-    mvwprintw(SetMap::win2, 1, 0, "check");
-    wrefresh(SetMap::win2);
-    //
     addGates();
   }
   drawBlocks();
