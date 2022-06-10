@@ -1,4 +1,6 @@
 #include <memory.h>
+#include <string>
+#include <fstream>
 #include "../include/setmap.h"
 // #include "gameset.h"
 
@@ -7,11 +9,14 @@ SetMap g_setMap;
 int g_gameMap[MAP_HSIZE][MAP_WSIZE];
 WINDOW* SetMap::win1 = nullptr;
 WINDOW* SetMap::win2 = nullptr;
+WINDOW* SetMap::win3 = nullptr;
 /* unuse */
 void SetMap::clearMap()
 {
   memset(g_gameMap, 0, sizeof(g_gameMap));
 }
+
+
 
 void SetMap::refreshScreen(WINDOW* win1)
 {
@@ -25,26 +30,15 @@ void SetMap::refreshScreen(WINDOW* win1)
 
 void SetMap::setOnMap(WINDOW* win, const Point& p, GameObject obj)
 {
-  g_gameMap[p.y][p.x] = obj;
-  // test
-  // cout << obj << endl;
-  if (obj == GAMEOBJECT_EMPTY) {
-    mvwaddch(win1, p.y, p.x, ' ');
+  char c;
+  g_gameMap[p.y][p.x] = c = obj;
+  if (c == GAMEOBJECT_EMPTY) {
+    c = ' ';
   }
-  else {
-    mvwaddch(win1, p.y, p.x, obj);
+  else if (c == GAMEOBJECT_IMMUNE_BLOCK) {
+    c = 'B';
   }
-  // refresh();
-  // wrefresh(win1);
-  // wrefresh(win2);
-}
-
-/* unuse */
-void SetMap::delay()
-{
-  using namespace std::this_thread;
-  using namespace std::chrono;
-  sleep_for(milliseconds(50));
+  mvwaddch(win1, p.y, p.x, c);
 }
 
 void SetMap::printAll(WINDOW* win)

@@ -17,6 +17,7 @@ enum Direction {
 class Snake {
   Point head;
   std::vector<Point> body;
+  Point lastPos;
   int size;
   Direction direction;
   bool die = false;
@@ -32,9 +33,10 @@ public:
   void setDirection(Direction d) { direction = d; }
   void increaseSize();
   void decreaseSize();
+  void onCollisionWithGate();
   void getArrow(int key);
   void move();
-  void draw(const Point& prevPos) const;
+  void draw() const;
   void drawEmpty(const Point& pos) const {
     g_setMap.setOnMap(SetMap::win1, pos, GAMEOBJECT_EMPTY);
   }

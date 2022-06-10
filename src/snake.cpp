@@ -5,7 +5,7 @@ using namespace std;
 
 void Snake::move()
 {
-  Point prevPos = head; //
+  lastPos = head; //
   // head 이동
   if (direction == DIRECTION_LEFT) {
     head.x--;
@@ -28,12 +28,11 @@ void Snake::move()
 
   // body 이동
   for (auto& p : body) {
-    swap(prevPos, p);
+    swap(lastPos, p);
   }
   checkCollision();
   checkSnakeState();
-  draw(prevPos);
-  // checkCollision();
+  draw();
 }
 
 void Snake::getArrow(int key)
@@ -59,26 +58,32 @@ void Snake::getArrow(int key)
 void Snake::checkCollision()
 {
   int& headPos = g_gameMap[head.y][head.x];
-  if (headPos == GAMEOBJECT_BLOCK) {
-    // mvwprintw(SetMap::win2, 0, 0, "conflict with block");
-    die = true;
-  }
-  else if (headPos == GAMEOBJECT_SNAKE_BODY) {
-    // mvwprintw(SetMap::win2, 0, 0, "conflict with body");
-    die = true;
-  }
-  else if (headPos == GAMEOBJECT_APPLE) {
-    // mvwprintw(SetMap::win2, 0, 0, "conflict with apple");
-    increaseSize();
-  }
-  else if (headPos == GAMEOBJECT_POISION) {
-    // mvwprintw(SetMap::win2, 0, 0, "conflict with apple");
-    decreaseSize();
-  }
-  else if (headPos == GAMEOBJECT_PORTAL) {
+  switch (headPos) {
+    case GAMEOBJECT_BLOCK:
+    case GAMEOBJECT_IMMUNE_BLOCK:
+    case GAMEOBJECT_SNAKE_BODY:
+      die = true;
+      break;
 
+    case GAMEOBJECT_APPLE:
+      increaseSize();
+      break;
+
+    case GAMEOBJECT_POISION:
+      decreaseSize();
+      break;
+
+    case GAMEOBJECT_PORTAL:
+      onCollisionWithGate();
+      break;
   }
 }
+
+void Snake::onCollisionWithGate()
+{
+
+}
+
 void Snake::checkSnakeState()
 {
   if (size < 3) {
@@ -88,10 +93,10 @@ void Snake::checkSnakeState()
 
 void Snake::increaseSize()
 {
-  int y = body[body.size() - 2].y - body[body.size() - 1].y;
-  int x = body[body.size() - 2].x - body[body.size() - 1].x;
+  // int y = body.back().y + body[body.size() - 2].y - body[body.size() - 1].y;
+  // int x = body.back().x + body[body.size() - 2].x - body[body.size() - 1].x;
 
-  body.emplace_back(y, x);
+  body.emplace_back(lastPos.y, lastPos.x);
   size++;
 }
 
@@ -102,7 +107,7 @@ void Snake::decreaseSize()
   size--;
 }
 
-void Snake::draw(const Point& prevPos) const
+void Snake::draw() const
 {
   g_setMap.setOnMap(SetMap::win1, head, GAMEOBJECT_SNAKE_HEAD);
   for (const auto& p : body) {
@@ -110,6 +115,5 @@ void Snake::draw(const Point& prevPos) const
   }
   // temporary
   wattron(SetMap::win1, COLOR_PAIR(1));
-  drawEmpty(prevPos);
-  // g_setMap.setOnMap(SetMap::win1, prevPos, GAMEOBJECT_EMPTY);
+  drawEmpty(lastPos);
 }

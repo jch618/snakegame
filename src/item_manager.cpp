@@ -3,6 +3,7 @@
 #include <algorithm>
 using namespace std;
 
+ItemManager g_itemManager;
 Item ItemManager::makeItem(GameObject itemType)
 {
   int y = rand() % MAP_HSIZE;
