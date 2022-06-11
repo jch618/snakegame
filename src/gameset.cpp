@@ -25,8 +25,8 @@ void GameSet::gameStart()
   wattron(SetMap::win1, COLOR_PAIR(1));
 
   SetMap::win1 = newwin(MAP_HSIZE, MAP_WSIZE, 0, 0); // HSIZE: 40
-  SetMap::win2 = newwin(10, SCREEN_WSIZE - MAP_WSIZE, 0, MAP_WSIZE);
-  SetMap::win3 = newwin(10, SCREEN_WSIZE - MAP_WSIZE, 10, MAP_WSIZE);
+  SetMap::win2 = newwin(WIN2_HSIZE, WIN2_WSIZE, 0, MAP_WSIZE+1);
+  SetMap::win3 = newwin(WIN2_HSIZE, WIN2_WSIZE, WIN2_HSIZE, MAP_WSIZE+1);
   wbkgd(SetMap::win1, COLOR_PAIR(1));
   wbkgd(SetMap::win2, COLOR_PAIR(2));
   wattron(SetMap::win1, COLOR_PAIR(2));
@@ -153,14 +153,20 @@ void GameSet::playingGame()
   nodelay(stdscr, false);
   if (clear) {
     if (gameLevel == 5) {
+      mvwprintw(SetMap::win1, MAP_HSIZE/2, MAP_WSIZE/3, "Clear!");
+      wrefresh(SetMap::win1);
       clearGame();
       endGame();
       return;
     }
+    mvwprintw(SetMap::win1, MAP_HSIZE/2, MAP_WSIZE/3, "Clear!");
+    wrefresh(SetMap::win1);
+    // getch();
     gameLevel++;
     playingGame();
   }
   else {
+    mvwprintw(SetMap::win1, MAP_HSIZE/2, MAP_WSIZE/3, "Game over.");
     getch();
     endGame();
     return;
@@ -174,7 +180,7 @@ void GameSet::clearGame()
   wclear(SetMap::win1);
   // wclear(SetMap::win2);
   // wclear(SetMap::win3);
-  mvwprintw(SetMap::win1, MAP_HSIZE/2, MAP_WSIZE/4, "you saved Kookmin university.");
+  mvwprintw(SetMap::win1, MAP_HSIZE/2, MAP_WSIZE/4, "You saved Kookmin university.");
   wrefresh(SetMap::win1);
   // wrefresh(SetMap::win2);
   // wrefresh(SetMap::win3);
@@ -214,6 +220,6 @@ void GameSet::endGame()
   }
   getch();
   fs.close();
-  
+
   endwin();
 }

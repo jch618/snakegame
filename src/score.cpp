@@ -15,7 +15,7 @@ bool Score::isMissionFinished() const
 void Score::draw() const
 {
   string str;
-  g_setMap.mvPrint(SetMap::win2, 1, 3, "Score Board");
+  g_setMap.mvPrint(SetMap::win2, 1, 1, "Score Board");
   str = "Level: " + to_string(level);
   g_setMap.mvPrint(SetMap::win2, 2, 3, str.c_str());
   str = "B:  " + to_string(currSize) + " / " + to_string(sizeMax[level]);

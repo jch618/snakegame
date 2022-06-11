@@ -115,22 +115,20 @@ void Snake::onCollisionWithGate()
   else {
     head = positions[0];
   }
-  int dy[4] = { -1, 0, 1, 0 }; // up right down left
+  int dy[4] = { -1, 0, 1, 0 }; // up right down left (clockwise)
   int dx[4] = { 0, 1, 0, -1 };
   int idx[4] = { 0, 1, 3, 2 };
   int nextY, nextX, d = (int)direction;
   for (const auto& i : idx) {
     nextY = head.y + dy[(d + i) % 4];
     nextX = head.x + dx[(d + i) % 4];
-    if (nextY < 0 || nextX < 0 || nextY >= MAP_HSIZE || nextX >= MAP_HSIZE) {
+    if (nextY < 0 || nextX < 0 || nextY >= MAP_HSIZE || nextX >= MAP_WSIZE) {
       continue;
     }
-    if (g_gameMap[nextY][nextX] == 0) {
+    if (g_gameMap[nextY][nextX] == GAMEOBJECT_EMPTY
+        || g_gameMap[nextY][nextX] == GAMEOBJECT_APPLE
+        || g_gameMap[nextY][nextX] == GAMEOBJECT_POISION) {
       direction = (Direction)((d + i) % 4);
-      //
-      mvwaddch(SetMap::win2, 0, 0, (int)direction + '0');
-      wrefresh(SetMap::win2);
-      //
       break;
     }
   }
@@ -145,9 +143,6 @@ void Snake::checkSnakeState()
 
 void Snake::increaseSize()
 {
-  // int y = body.back().y + body[body.size() - 2].y - body[body.size() - 1].y;
-  // int x = body.back().x + body[body.size() - 2].x - body[body.size() - 1].x;
-
   body.emplace_back(lastPos.y, lastPos.x);
   size++;
 }

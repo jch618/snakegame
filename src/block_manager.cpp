@@ -1,9 +1,6 @@
 #include "../include/block_manager.h"
-//
-#include <string>
 #include <algorithm>
 using namespace std;
-//
 BlockManager g_blockManager;
 std::vector<Point> BlockManager::getGatePos() const
 {
@@ -51,6 +48,7 @@ void BlockManager::checkGateState()
 {
   for (auto& g : gates) {
     g.checkTime();
+    g.checkCollision();
   }
 }
 

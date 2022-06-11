@@ -8,6 +8,8 @@
 #include "point.h"
 #define MAP_HSIZE 30
 #define MAP_WSIZE 40
+#define WIN2_HSIZE 10
+#define WIN2_WSIZE 19
 
 class GameSet;
 class Item;
