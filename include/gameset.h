@@ -8,12 +8,8 @@
 #define SCREEN_HSIZE 40
 #define SCREEN_WSIZE 60
 
-
-// game의 설정변수들 저장
 /*
- * 상단 윈도우
- * 하단 box
- *
+ * execute game loop
  */
 extern int g_gameMap[MAP_HSIZE][MAP_WSIZE];
 extern SetMap g_setMap;
