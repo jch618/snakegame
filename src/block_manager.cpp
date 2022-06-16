@@ -54,7 +54,7 @@ void BlockManager::checkGateState()
 
 void BlockManager::removeInvalidGate()
 {
-  if (!gates.empty() && gates[0].invalid) {
+  if (!gates.empty() && (gates[0].invalid || gates[1].invalid)) {
     addBlock(GAMEOBJECT_BLOCK, gates[0].pos.y, gates[0].pos.x);
     addBlock(GAMEOBJECT_BLOCK, gates[1].pos.y, gates[1].pos.x);
     gates.pop_back();
